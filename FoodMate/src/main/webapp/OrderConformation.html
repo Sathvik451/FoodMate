@@ -1,0 +1,689 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodMate | Order Confirmed</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --primary-dark: #E55A24;
+            --accent: #00C853;
+            --text: #2D3436;
+            --text-light: #636E72;
+            --light: #F8F9FA;
+            --white: #FFFFFF;
+            --border: #E5E7EB;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #FFF9F5 0%, #FEF3E7 100%);
+            min-height: 100vh;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--white);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo i {
+            font-size: 28px;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 25px;
+            font-weight: 500;
+            color: var(--text);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: rgba(255, 107, 53, 0.1);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* Success Card */
+        .success-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            margin-top: 40px;
+            animation: fadeIn 0.6s ease;
+        }
+
+        /* Checkmark Animation */
+        .checkmark {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--accent), #00E676);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            position: relative;
+        }
+
+        .checkmark::before {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: pulse 2s infinite;
+        }
+
+        .checkmark i {
+            font-size: 36px;
+            color: var(--white);
+            animation: scaleIn 0.5s ease;
+        }
+
+        /* Success Text */
+        .success-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--primary), #FF9A3C);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .success-subtitle {
+            font-size: 16px;
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+
+        /* Order Info */
+        .order-info {
+            background: var(--light);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            text-align: left;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .info-row:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .info-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* Status Bar */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .status-bar::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--border);
+            z-index: 1;
+        }
+
+        .status-bar::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            width: 33%;
+            height: 4px;
+            background: var(--accent);
+            z-index: 2;
+            animation: progress 1.5s ease;
+        }
+
+        .status-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 3;
+        }
+
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            font-size: 16px;
+            color: var(--text-light);
+        }
+
+        .step-icon.active {
+            background: var(--accent);
+            color: var(--white);
+            box-shadow: 0 4px 12px rgba(0, 200, 83, 0.3);
+        }
+
+        .step-text {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-light);
+        }
+
+        .step-text.active {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Quick Info */
+        .quick-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .info-box {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .info-box:hover {
+            transform: translateY(-5px);
+        }
+
+        .info-box i {
+            font-size: 24px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .info-box h4 {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+
+        .info-box p {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* Buttons */
+        .buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.2;
+            }
+        }
+
+        @keyframes progress {
+            from {
+                width: 0;
+            }
+            to {
+                width: 33%;
+            }
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            animation: fall 3s linear forwards;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+
+            .success-card {
+                padding: 25px;
+                margin-top: 20px;
+            }
+
+            .success-title {
+                font-size: 28px;
+            }
+
+            .quick-info {
+                grid-template-columns: 1fr;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            .nav-menu {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .success-card {
+                padding: 20px;
+            }
+
+            .order-info {
+                padding: 20px;
+            }
+
+            .status-bar {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+
+            .status-bar::before,
+            .status-bar::after {
+                display: none;
+            }
+
+            .status-step {
+                flex: 0 0 calc(50% - 10px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Confetti -->
+    <div class="confetti" id="confetti"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="navbar">
+            <a href="restaurant" class="logo">
+                <i class="fas fa-utensils"></i>
+                <span>FoodMate</span>
+            </a>
+            <ul class="nav-menu">
+                <li>
+                    <a href="restaurant" class="nav-link">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="cart" class="nav-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Cart</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Login</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <div class="success-card">
+            <!-- Success Icon -->
+            <div class="checkmark">
+                <i class="fas fa-check"></i>
+            </div>
+
+            <!-- Success Message -->
+            <h1 class="success-title">Order Confirmed!</h1>
+            <p class="success-subtitle">Your delicious meal is being prepared and will arrive soon</p>
+
+            <!-- Order Info -->
+            <div class="order-info">
+                <div class="info-row">
+                    <span class="info-label">Order ID</span>
+                    <span class="info-value" id="orderId">#FM-2024-XXXXXX</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Order Date</span>
+                    <span class="info-value" id="orderDate">Loading...</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Estimated Delivery</span>
+                    <span class="info-value" id="deliveryTime">30-45 minutes</span>
+                </div>
+            </div>
+
+            <!-- Status Bar -->
+            <div class="status-bar">
+                <div class="status-step">
+                    <div class="step-icon active">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <span class="step-text active">Ordered</span>
+                </div>
+                <div class="status-step">
+                    <div class="step-icon">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <span class="step-text">Preparing</span>
+                </div>
+                <div class="status-step">
+                    <div class="step-icon">
+                        <i class="fas fa-shipping-fast"></i>
+                    </div>
+                    <span class="step-text">On the Way</span>
+                </div>
+                <div class="status-step">
+                    <div class="step-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <span class="step-text">Delivered</span>
+                </div>
+            </div>
+
+            <!-- Quick Info -->
+            <div class="quick-info">
+               
+                <div class="info-box">
+                    <i class="fas fa-clock"></i>
+                    <h4>Preparation Time</h4>
+                    <p>15-20 mins</p>
+                </div>
+                <div class="info-box">
+                    <i class="fas fa-headset"></i>
+                    <h4>Need Help?</h4>
+                    <p>24/7 Support</p>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="buttons">
+                <a href="#" class="btn btn-secondary">
+                    <i class="fas fa-truck"></i>
+                    Track Order
+                </a>
+                <a href="restaurant" class="btn btn-primary">
+                    <i class="fas fa-utensils"></i>
+                    Order Again
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Generate Order ID
+        function generateOrderId() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let result = '';
+            for (let i = 0; i < 6; i++) {
+                result += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return `#FM-2024-${result}`;
+        }
+
+        // Format Date
+        function formatDate(date) {
+            return date.toLocaleDateString('en-US', { 
+                weekday: 'short',
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Calculate Delivery Time
+        function calculateDeliveryTime() {
+            const now = new Date();
+            const minTime = new Date(now.getTime() + 30 * 60000);
+            const maxTime = new Date(now.getTime() + 45 * 60000);
+            
+            const formatTime = (date) => {
+                return date.toLocaleTimeString('en-US', { 
+                    hour: '2-digit', 
+                    minute: '2-digit',
+                    hour12: true 
+                });
+            };
+            
+            return `${formatTime(minTime)} - ${formatTime(maxTime)}`;
+        }
+
+        // Create Confetti
+        function createConfetti() {
+            const confettiContainer = document.getElementById('confetti');
+            const colors = ['#FF6B35', '#00C853', '#FFB300', '#2979FF', '#8E44AD'];
+            
+            for (let i = 0; i < 30; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti-piece';
+                
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const left = Math.random() * 100;
+                const delay = Math.random() * 1;
+                const size = Math.random() * 8 + 6;
+                const duration = Math.random() * 2 + 2;
+                
+                confetti.style.left = `${left}%`;
+                confetti.style.animationDelay = `${delay}s`;
+                confetti.style.animationDuration = `${duration}s`;
+                confetti.style.width = `${size}px`;
+                confetti.style.height = `${size}px`;
+                confetti.style.background = color;
+                confetti.style.borderRadius = '50%';
+                
+                confettiContainer.appendChild(confetti);
+                
+                // Remove confetti after animation
+                setTimeout(() => {
+                    confetti.remove();
+                }, duration * 1000);
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set Order ID
+            const orderIdElement = document.getElementById('orderId');
+            if (orderIdElement) {
+                orderIdElement.textContent = generateOrderId();
+            }
+            
+            // Set Order Date
+            const orderDateElement = document.getElementById('orderDate');
+            if (orderDateElement) {
+                orderDateElement.textContent = formatDate(new Date());
+            }
+            
+            // Set Delivery Time
+            const deliveryTimeElement = document.getElementById('deliveryTime');
+            if (deliveryTimeElement) {
+                deliveryTimeElement.textContent = calculateDeliveryTime();
+            }
+            
+            // Trigger confetti
+            setTimeout(createConfetti, 300);
+            setTimeout(createConfetti, 800);
+        });
+    </script>
+</body>
+</html>
